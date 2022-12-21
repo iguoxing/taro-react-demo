@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import './index.scss'
 // eslint-disable-next-line import/first
-import { AtButton, AtSegmentedControl } from 'taro-ui'
+import { AtButton, AtSegmentedControl,AtTabBar } from 'taro-ui'
 
 export default class Index extends Component {
 
@@ -20,14 +20,39 @@ export default class Index extends Component {
   constructor (){
     super(...arguments)
     this.state = {
-      current: 0
+      current: 0,
+      subCurrent: 0,
+      segmentList: [
+        {
+          tagsData:[
+            {title:'历史'},
+            {title:'政治'},
+            {title:'地理'},
+          ]
+        },
+        {
+          tagsData:[
+            {title:'化学'},
+            {title:'物理'},
+            {title:'生物'},
+          ]
+        }
+      ],
     }
   }
 
   handleClick (value) {
     console.log(value)
     this.setState({
-      current: value
+      current: value,
+      subCurrent:0 ,
+    })
+  }
+
+  chooseSecondTab (data){
+    console.log(data)
+    this.setState({
+      subCurrent: data,
     })
   }
 
@@ -39,8 +64,10 @@ export default class Index extends Component {
           onClick={this.handleClick.bind(this)}
           current={this.state.current}
         />
-        {this.state.current===0?<view>关注页内容</view>:null}
-        {this.state.current===1?<view>发现页内容</view>:null}
+        <AtTabBar tabList={this.state.segmentList[this.state.current].tagsData}
+          onClick={this.chooseSecondTab.bind(this)}
+          current={this.state.subCurrent}
+        ></AtTabBar>
       </View>
     )
   }
